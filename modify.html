@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Customize the Surprise ✏️</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✏️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #1f2433; --plum: #7a4a9e; --muted: #9a85b0; --pink: #ec4899; --line: #f3dcea;
+      --card: rgba(255, 255, 255, 0.86);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100dvh; color: var(--ink);
+      font-family: 'Quicksand', system-ui, sans-serif;
+      background: linear-gradient(135deg, #fde6f1 0%, #f0e2fb 50%, #e3e0ff 100%) fixed;
+    }
+    h1, h2, button, .eyebrow { font-family: 'Outfit', system-ui, sans-serif; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      padding: 14px 24px;
+      background: rgba(255, 255, 255, 0.72); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 24px rgba(150, 90, 200, 0.1);
+    }
+    header h1 { font-size: 1.35rem; margin: 0; font-weight: 800; flex: 1; min-width: 200px; }
+    header h1 small { display: block; font: 600 0.8rem 'Quicksand', sans-serif; color: var(--muted); margin-top: 2px; }
+    .status { font-size: 0.85rem; font-weight: 600; color: var(--muted); min-width: 110px; text-align: right; }
+    .status.dirty { color: #d97706; }
+    .status.ok { color: #059669; }
+    .status.err { color: #dc2626; }
+
+    .btn {
+      border: 0; cursor: pointer; border-radius: 999px; padding: 11px 20px;
+      font-weight: 600; font-size: 0.95rem; color: #fff;
+      transition: transform 0.15s cubic-bezier(.3, 1.6, .5, 1), filter 0.2s; white-space: nowrap;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    .btn:active { transform: scale(0.96); }
+    .btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+    .btn-save { background: linear-gradient(90deg, #ec4899, #fb7185); box-shadow: 0 8px 18px rgba(236, 72, 153, 0.3); }
+    .btn-ghost { background: #fff; color: #9333ea; border: 1.5px solid #e9d5ff; }
+    .btn-danger { background: #fff; color: #e11d48; border: 1.5px solid #fecdd3; }
+
+    .password { display: none; align-items: center; gap: 6px; }
+    .password.show { display: flex; }
+    .password input { width: 150px; }
+
+    .layout {
+      display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 24px;
+      max-width: 1240px; margin: 0 auto; padding: 24px;
+    }
+
+    .tips {
+      background: #fff8e1; border: 1.5px solid #fde68a; color: #92400e;
+      border-radius: 18px; padding: 12px 16px; font-size: 0.88rem; line-height: 1.55; margin-bottom: 16px;
+    }
+    .tips code { background: #fff; padding: 1px 6px; border-radius: 6px; font-size: 0.85rem; color: #be185d; }
+
+    section.card {
+      background: var(--card); border: 1.5px solid rgba(255, 255, 255, 0.95);
+      border-radius: 22px; box-shadow: 0 12px 34px rgba(150, 90, 200, 0.12);
+      margin-bottom: 16px; overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    section.card.focused { box-shadow: 0 0 0 3px #f9a8d4, 0 12px 34px rgba(236, 72, 153, 0.18); }
+    .card-head {
+      display: flex; align-items: center; gap: 12px; width: 100%;
+      padding: 16px 20px; background: none; border: 0; cursor: pointer; text-align: left; color: inherit;
+    }
+    .card-head img { width: 34px; height: 34px; }
+    .card-head .t { flex: 1; }
+    .eyebrow { color: #9333ea; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .card-head h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+    .chev { transition: transform 0.2s; color: var(--muted); font-size: 1.1rem; }
+    section.card.collapsed .chev { transform: rotate(-90deg); }
+    section.card.collapsed .fields { display: none; }
+
+    .fields { padding: 0 20px 20px; display: grid; gap: 14px; }
+    .field-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+    .field label { display: block; font-weight: 700; font-size: 0.85rem; color: var(--plum); }
+    .field-del, .field-restore {
+      border: 1.5px solid transparent; background: none; cursor: pointer; border-radius: 999px;
+      padding: 3px 10px; font: 600 0.78rem 'Outfit', sans-serif; white-space: nowrap;
+    }
+    .field-del { color: var(--muted); }
+    .field-del:hover, .field-del:focus-visible { color: #e11d48; border-color: #fecdd3; background: #fff1f2; }
+    .field-restore { color: #9333ea; border-color: #e9d5ff; background: #fff; }
+    .field-restore:hover, .field-restore:focus-visible { background: #faf5ff; }
+    .field-gone {
+      display: none; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+      padding: 9px 13px; border-radius: 12px; border: 1.5px dashed #e9d5ff;
+      font-size: 0.85rem; color: var(--muted); font-style: italic;
+    }
+    .field.is-removed label { color: var(--muted); text-decoration: line-through; }
+    .field.is-removed .field-del, .field.is-removed .field-body { display: none; }
+    .field.is-removed .field-gone { display: flex; }
+    .field .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+    input, textarea {
+      width: 100%; font: 500 0.98rem/1.5 'Quicksand', sans-serif; color: var(--ink);
+      padding: 10px 13px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff;
+      outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input:focus, textarea:focus { border-color: #f472b6; box-shadow: 0 0 0 4px #fce7f3; }
+    textarea { resize: vertical; min-height: 70px; }
+    textarea.tall { min-height: 170px; }
+    input[type=number] { width: 120px; }
+
+    .preview {
+      position: sticky; top: 96px; align-self: start;
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+    }
+    .phone {
+      width: 390px; height: min(760px, calc(100dvh - 190px)); min-height: 480px;
+      border-radius: 40px; padding: 12px; background: #fff;
+      box-shadow: 0 30px 70px rgba(120, 70, 180, 0.25), inset 0 0 0 1.5px #f1e4fb;
+    }
+    .phone iframe { width: 100%; height: 100%; border: 0; border-radius: 30px; background: #fde6f1; }
+    .screen-tabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+    .screen-tabs button {
+      border: 1.5px solid #e9d5ff; background: #fff; color: #7e22ce; border-radius: 999px;
+      padding: 6px 12px; font-size: 0.8rem; font-weight: 600; cursor: pointer;
+    }
+    .screen-tabs button.on { background: #9333ea; color: #fff; border-color: #9333ea; }
+    .preview-note { font-size: 0.78rem; color: var(--muted); text-align: center; }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); opacity: 0;
+      background: #1f2433; color: #fff; padding: 12px 20px; border-radius: 999px;
+      font-weight: 600; font-size: 0.92rem; transition: 0.3s; z-index: 20; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; padding: 16px; }
+      .preview { position: static; order: -1; }
+      .phone { width: min(100%, 390px); height: 640px; }
+      header { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>✏️ Customize the Surprise <small>Edit any text, preview it live, then hit save.</small></h1>
+    <label class="password" id="pwWrap">🔒 <input id="pw" type="password" placeholder="Password" autocomplete="current-password" /></label>
+    <span class="status" id="status">Loading…</span>
+    <button class="btn btn-danger" id="resetBtn" type="button">Reset to default</button>
+    <a class="btn btn-ghost" href="/" target="_blank" rel="noopener">Open surprise ↗</a>
+    <button class="btn btn-save" id="saveBtn" type="button" disabled>💾 Save</button>
+  </header>
+
+  <div class="layout">
+    <div>
+      <div class="tips">
+        💡 <b>Little tricks:</b> write <code>{name}</code> anywhere and it becomes your friend's name ·
+        wrap words in <code>**double stars**</code> to make them <b>bold</b> · emojis welcome everywhere 🌸 ·
+        <b>🗑 Delete</b> hides a line from the surprise, and <b>↺ Restore</b> brings it back with its text
+      </div>
+      <div id="form"></div>
+    </div>
+    <aside class="preview">
+      <div class="screen-tabs" id="tabs"></div>
+      <div class="phone"><iframe id="frame" title="Live preview" src="/?preview=1"></iframe></div>
+      <div class="preview-note">Live preview · unsaved changes show here first</div>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="/modify.js"></script>
+</body>
+</html>

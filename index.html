@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Someone made you something 🎁</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <div id="floaties" aria-hidden="true"></div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <button id="muteBtn" class="mute-btn" type="button" aria-label="Toggle sound">🔊</button>
+
+  <main id="stage">
+    <!-- 1. Intro -->
+    <section class="screen" id="s-intro">
+      <div class="card">
+        <div class="hero float">
+          <img data-fe="Wrapped gift" alt="🎁" />
+          <img class="hero-sparkle twinkle" data-fe="Sparkles" alt="✨" />
+        </div>
+        <h1><span data-t="intro.title"></span> <img class="inline-fe peek" data-fe="Eyes" alt="👀" /></h1>
+        <p class="sub" data-t="intro.subtitle"></p>
+        <div class="pill pill-pink">⚠️ <span data-t="intro.badge"></span></div>
+        <button class="btn btn-pink" type="button" data-go="confirm">
+          <span data-t="intro.button"></span> <span class="arrow">➜</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Are you sure? -->
+    <section class="screen" id="s-confirm">
+      <div class="card">
+        <div class="hero tilt"><img data-fe="Face with monocle" alt="🧐" /></div>
+        <h1 data-t="confirm.title"></h1>
+        <p class="sub" data-t="confirm.question"></p>
+        <div class="btn-row">
+          <button class="btn btn-green" id="yesBtn" type="button"><span data-t="confirm.yes"></span></button>
+          <button class="btn btn-outline" id="noBtn" type="button"><span id="noLabel" data-t="confirm.no"></span></button>
+        </div>
+        <p class="hint" data-t="confirm.hint"></p>
+      </div>
+    </section>
+
+    <!-- 3. Cat guardian -->
+    <section class="screen" id="s-cat">
+      <div class="card">
+        <div class="hero float"><img data-fe="Grinning cat" alt="😺" /></div>
+        <div class="pill pill-purple"><img class="pill-fe" data-fe="Sun" alt="☀️" /> <span data-t="cat.badge"></span></div>
+        <h1 class="shout"><span data-t="cat.title"></span> <img class="inline-fe" data-fe="Paw prints" alt="🐾" /></h1>
+        <p class="sub" data-t="cat.text"></p>
+        <p class="sub" data-t="cat.text2"></p>
+        <button class="btn btn-purple" type="button" data-go="game"><span data-t="cat.button"></span></button>
+      </div>
+    </section>
+
+    <!-- 4. Mini game -->
+    <section class="screen" id="s-game">
+      <div class="card card-wide">
+        <div class="game-head">
+          <div class="game-title">
+            <div class="eyebrow" data-t="game.label"></div>
+            <h2><span data-t="game.title"></span> <img class="inline-fe" data-fe="Two hearts" alt="💕" /></h2>
+          </div>
+          <div class="score" id="scorePill">Caught: <b id="score">0</b> <small>/ <span id="target">10</span></small></div>
+        </div>
+        <div class="progress"><div class="progress-fill" id="progress"></div></div>
+        <div class="arena" id="arena">
+          <p class="arena-hint" id="arenaHint" data-t="game.instructions"></p>
+          <button class="target" id="heart" type="button" aria-label="Catch the heart">
+            <img data-fe="Heart with ribbon" alt="💝" draggable="false" />
+          </button>
+        </div>
+        <div class="game-foot">
+          <span>Streak Combo: <b id="combo">0x</b></span>
+          <span>Speed: <b id="speed">Sleepy Kitten</b></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Success -->
+    <section class="screen" id="s-success">
+      <div class="card">
+        <div class="hero float"><img data-fe="Smiling cat with heart-eyes" alt="😻" /></div>
+        <div class="pill pill-gold"><img class="pill-fe" data-fe="Trophy" alt="🏆" /> <span data-t="success.badge"></span></div>
+        <h1 class="shout"><span data-t="success.title"></span> <img class="inline-fe" data-fe="Party popper" alt="🎉" /></h1>
+        <p class="sub" data-t="success.text"></p>
+        <p class="sub" data-t="success.text2"></p>
+        <button class="btn btn-rainbow" type="button" data-go="birthday"><span data-t="success.button"></span> ✨</button>
+      </div>
+    </section>
+
+    <!-- 6. Happy birthday -->
+    <section class="screen" id="s-birthday">
+      <div class="card card-wide birthday-card">
+        <button class="cake" id="cake" type="button" aria-label="Blow out the candles">
+          <svg viewBox="0 0 200 200" width="200" height="200" aria-hidden="true">
+            <defs>
+              <linearGradient id="gBottom" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffc39e" /><stop offset="1" stop-color="#f4925f" />
+              </linearGradient>
+              <linearGradient id="gTop" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffd0e1" /><stop offset="1" stop-color="#ff8fb6" />
+              </linearGradient>
+              <linearGradient id="gCandle1" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#7dd3fc" /><stop offset="1" stop-color="#38bdf8" />
+              </linearGradient>
+              <linearGradient id="gCandle2" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#c4b5fd" /><stop offset="1" stop-color="#a78bfa" />
+              </linearGradient>
+              <linearGradient id="gCandle3" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#fde68a" /><stop offset="1" stop-color="#fbbf24" />
+              </linearGradient>
+            </defs>
+            <ellipse cx="100" cy="184" rx="92" ry="11" fill="#eadcff" />
+            <ellipse cx="100" cy="181" rx="84" ry="8" fill="#fff" />
+            <!-- candles -->
+            <g>
+              <rect x="66" y="40" width="12" height="34" rx="4" fill="url(#gCandle1)" />
+              <rect x="94" y="34" width="12" height="40" rx="4" fill="url(#gCandle2)" />
+              <rect x="122" y="40" width="12" height="34" rx="4" fill="url(#gCandle3)" />
+              <path d="M66 50 l12 -5 M66 60 l12 -5 M66 70 l12 -5" stroke="#fff" stroke-width="3" opacity=".7" />
+              <path d="M94 46 l12 -5 M94 56 l12 -5 M94 66 l12 -5" stroke="#fff" stroke-width="3" opacity=".7" />
+              <path d="M122 50 l12 -5 M122 60 l12 -5 M122 70 l12 -5" stroke="#fff" stroke-width="3" opacity=".7" />
+              <path d="M72 40 v-6 M100 34 v-6 M128 40 v-6" stroke="#5b4636" stroke-width="2" stroke-linecap="round" />
+            </g>
+            <!-- bottom tier -->
+            <rect x="20" y="115" width="160" height="66" rx="16" fill="url(#gBottom)" />
+            <rect x="20" y="152" width="160" height="7" fill="#fff1e2" opacity=".9" />
+            <path d="M20 129 Q20 115 34 115 L166 115 Q180 115 180 129 L180 134 Q174 148 166 134 Q158 152 148 134 Q140 145 130 134 Q120 154 110 134 Q102 145 92 134 Q82 151 72 134 Q64 145 54 134 Q44 149 36 134 Q28 143 20 134 Z" fill="#fff6fb" />
+            <!-- top tier -->
+            <rect x="40" y="72" width="120" height="50" rx="14" fill="url(#gTop)" />
+            <path d="M40 86 Q40 72 54 72 L146 72 Q160 72 160 86 L160 90 Q155 101 150 90 Q144 105 136 90 Q130 99 122 90 Q114 107 106 90 Q100 99 92 90 Q84 105 76 90 Q70 99 62 90 Q55 103 48 90 Q44 97 40 90 Z" fill="#fffaf2" />
+            <!-- sprinkles -->
+            <g stroke-width="3.5" stroke-linecap="round">
+              <path d="M58 106 l5 -3" stroke="#60a5fa" /><path d="M80 112 l5 3" stroke="#fbbf24" />
+              <path d="M98 104 l4 -4" stroke="#34d399" /><path d="M118 112 l6 -1" stroke="#a78bfa" />
+              <path d="M140 104 l3 5" stroke="#f472b6" /><path d="M46 165 l5 -3" stroke="#a78bfa" />
+              <path d="M70 172 l6 1" stroke="#60a5fa" /><path d="M96 166 l4 -4" stroke="#f472b6" />
+              <path d="M124 172 l5 3" stroke="#fbbf24" /><path d="M150 165 l5 -2" stroke="#34d399" />
+              <path d="M160 174 l3 4" stroke="#f472b6" /><path d="M34 175 l4 -3" stroke="#fbbf24" />
+            </g>
+          </svg>
+          <span class="flame" style="left:72px;top:12px"></span>
+          <span class="flame" style="left:100px;top:6px"></span>
+          <span class="flame" style="left:128px;top:12px"></span>
+        </button>
+        <div class="pill pill-gold cake-hint" id="cakeHint">✨ <span data-t="birthday.cakeHint"></span></div>
+        <p class="wish-made hidden" id="wishMade" data-t="birthday.wishMade"></p>
+
+        <h1 class="rainbow-title"><span data-t="birthday.title"></span> <img class="inline-fe" data-fe="Party popper" alt="🎉" /></h1>
+
+        <div class="letter">
+          <div class="vip-row">
+            <img class="vip-fe" data-fe="Sparkling heart" alt="💖" />
+            <span class="vip-label" data-t="birthday.vipLabel"></span>
+            <span class="vip-name" id="vipName"></span>
+          </div>
+          <p class="greeting" data-t="birthday.greeting"></p>
+          <div id="paragraphs"></div>
+          <p class="highlight" data-t="birthday.highlight"></p>
+          <div class="signoff">
+            <span data-t="birthday.signoff"></span>
+            <strong data-t="birthday.signature"></strong>
+          </div>
+        </div>
+
+        <div class="end-row">
+          <button class="btn btn-pink btn-small" id="replayBtn" type="button"><span data-t="birthday.replayButton"></span></button>
+          <button class="link-btn" id="restartBtn" type="button">↺ Start over</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/sound.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
