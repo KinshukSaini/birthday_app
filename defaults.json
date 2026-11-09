@@ -1,0 +1,61 @@
+{
+  "friendName": "Bestie",
+  "removed": [],
+  "intro": {
+    "title": "Hey You!",
+    "subtitle": "Someone handcrafted a little secret universe just for you…",
+    "badge": "Extreme cuteness alert ahead",
+    "button": "Let's Open It 🎀"
+  },
+  "confirm": {
+    "title": "Hold On A Second…",
+    "question": "Are you **100% CERTAIN** you're emotionally ready to uncover what's waiting?",
+    "yes": "YES, I'M READY! 😊",
+    "no": "No Thanks 😭",
+    "hint": "(Hint: Resistance is cute, but mathematically futile ✨)",
+    "noTaunts": [
+      "Nope, try again 😜",
+      "Too slow! 🐢",
+      "Are you sure? 🥺",
+      "The button is shy 🙈",
+      "Pleeease? 🥹",
+      "Okay that's just rude 😤",
+      "Fine… YES then 💖"
+    ]
+  },
+  "cat": {
+    "badge": "Guardian unlocked",
+    "title": "MEOW THERE!",
+    "text": "You have summoned the **Official Birthday Inspector**.",
+    "text2": "Before access to the royal gift is granted, you must pass the Cat's Agility Ritual!",
+    "button": "Accept Cat's Quest 🐾"
+  },
+  "game": {
+    "label": "Objective",
+    "title": "Catch The Lost Hearts!",
+    "instructions": "Tap the bouncy heart as fast as you can!",
+    "target": 10
+  },
+  "success": {
+    "badge": "Quest completed with honor!",
+    "title": "MEOW-NIFICENT!",
+    "text": "The Cat has inspected your vibes, test results, and agility. You have passed with 100% purrfection.",
+    "text2": "The vault is unlocking now…",
+    "button": "Reveal My Birthday Present 🎂"
+  },
+  "birthday": {
+    "title": "HAPPY BIRTHDAY!",
+    "cakeHint": "Make a wish & tap the cake to blow out the candles!",
+    "vipLabel": "Birthday VIP",
+    "greeting": "Dearest {name},",
+    "paragraphs": [
+      "May this brand new year of your life be filled with ridiculous bursts of laughter, cozy peaceful moments, unforgettable adventures, warm hugs, and all of the good food you crave! 🍕🍰",
+      "You bring so much light, comfort, and undeniable brightness to everyone around you. Never ever forget how genuinely wonderful and cherished you are. ✨"
+    ],
+    "highlight": "Here's to another spectacular chapter of greatness! 🥂🎈",
+    "signoff": "With all my love,",
+    "signature": "Your favourite human 💌",
+    "wishMade": "Wish received! The universe is already working on it 🌟",
+    "replayButton": "Play the song again 🎵"
+  }
+}

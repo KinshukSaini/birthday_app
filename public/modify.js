@@ -239,6 +239,7 @@
       $('#pw').focus();
       return false;
     }
+    if (res.status === 503) { status('No database', 'err'); toast('🗄️ Connect a database in Vercel (Storage tab) to save'); return false; }
     if (!res.ok) { status('Save failed', 'err'); toast('😿 Something went wrong'); return false; }
     try { sessionStorage.setItem('bday-pw', $('#pw').value); } catch {}
     config = await res.json();
